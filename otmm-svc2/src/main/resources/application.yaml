@@ -1,0 +1,13 @@
+server.port: 8083
+
+spring.application.name: ottm-svc2
+spring.output.ansi.enabled: always
+
+spring.microtx.lra:
+  coordinator-url: http://localhost:9000/api/v1/lra-coordinator
+  propagation-active: true
+  participant-url: http://localhost:8083
+  headers-propagation-prefix: { x-b3-, oracle-tmm-, authorization, refresh- }
+
+logging.level:
+  com.kb: DEBUG

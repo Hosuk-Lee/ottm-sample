@@ -1,0 +1,54 @@
+version: "3.9"
+
+configs:
+  my_tcs_config:
+    file: ./tcs.yaml
+
+services:
+  otmm-tcs:
+    image: "tmm:24.2.1"
+    ports:
+      - "9000:9000"
+    deploy:
+      replicas: 1
+    configs:
+      - source: my_tcs_config
+        target: /tcs.yaml
+    entrypoint: [ '/bin/sh', '-c', 'export TMMSECRETKEY=$$(cat /run/secrets/TMMSECRETKEY); export TMMPRIKEY=$$(cat /run/secrets/TMMPRIKEY); export TMMPUBKEY=$$(cat /run/secrets/TMMPUBKEY); export TMMPRIKEYPASSWD=$$(cat /run/secrets/TMMPRIKEYPASSWD); /app/tcs' ]
+    environment:
+      - CONFIG_FILE=/tcs.yaml
+  # LRA Sample Application (services) below (Uncomment and edit to run)
+  offer:
+    image: "ottm-offer:1.0"
+    ports:
+      - "8081:8081"
+    deploy:
+      replicas: 1
+    environment:
+      SERVICE_NAME: offer
+      ### MicroTx Springboot lib specific env
+      SPRING_MICROTX_LRA_COORDINATOR_URL: "http://otmm-tcs:9000/api/v1/lra-coordinator"
+      SPRING_MICROTX_LRA_PARTICIPANT_URL: "http://offer:8081"
+  svc1:
+    image: "ottm-svc1:1.0"
+    ports:
+      - "8082:8082"
+    deploy:
+      replicas: 1
+    environment:
+      SERVICE_NAME: svc1
+      ### MicroTx Springboot lib specific env
+      SPRING_MICROTX_LRA_COORDINATOR_URL: "http://otmm-tcs:9000/api/v1/lra-coordinator"
+      SPRING_MICROTX_LRA_PARTICIPANT_URL: "http://svc1:8082"
+  svc2:
+    image: "ottm-svc2:1.0"
+    ports:
+      - "8083:8083"
+    deploy:
+      replicas: 1
+    environment:
+      SERVICE_NAME: svc2
+      ### MicroTx Springboot lib specific env
+      SPRING_MICROTX_LRA_COORDINATOR_URL: "http://otmm-tcs:9000/api/v1/lra-coordinator"
+      SPRING_MICROTX_LRA_PARTICIPANT_URL: "http://svc2:8083"
+

@@ -1,0 +1,13 @@
+server.port: 9011
+
+spring.application.name: ottm-svc1-sub1
+spring.output.ansi.enabled: always
+
+spring.microtx.lra:
+  coordinator-url: ${SPRING_MICROTX_LRA_COORDINATOR_URL}
+  propagation-active: true
+  participant-url: ${SPRING_MICROTX_LRA_PARTICIPANT_URL}
+  headers-propagation-prefix: { x-b3-, oracle-tmm-, authorization, refresh- }
+
+logging.level:
+  com.kb: DEBUG

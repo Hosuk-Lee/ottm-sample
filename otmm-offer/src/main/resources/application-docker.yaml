@@ -1,0 +1,17 @@
+server.port: 8081
+
+spring.application.name: ottm-offer
+spring.output.ansi.enabled: always
+
+spring.microtx.lra:
+  coordinator-url: ${SPRING_MICROTX_LRA_COORDINATOR_URL}
+  propagation-active: true
+  participant-url: ${SPRING_MICROTX_LRA_PARTICIPANT_URL}
+  headers-propagation-prefix: { x-b3-, oracle-tmm-, authorization, refresh- }
+
+svc1.service.url: http://svc1:8082/svc-1/api/new
+svc2.service.url: http://svc2:8083/svc-2/api/new
+
+logging.level:
+  root: DEBUG
+  com.kb: DEBUG
