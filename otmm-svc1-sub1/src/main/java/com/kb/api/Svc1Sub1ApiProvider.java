@@ -21,17 +21,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Slf4j
 @Service
 public class Svc1Sub1ApiProvider {
-
+    @LRA(value = LRA.Type.REQUIRES_NEW, end = false)
     public void accountNew(
             String lraId, String oracleTmmTxToken, Map body)
     {
-        log.info("[SVC-1]Svc1Sub1ApiProvider {}", lraId);
+        log.info("[SVC1-SUB1]Svc1Sub1ApiProvider {}", lraId);
     }
     @AfterLRA
     public void after(
             String lraId, String status) {
-        log.info("[SVC-1][/after] After LRA Called : " + lraId);
-        log.info("[SVC-1][/after] Final LRA Status : " + status);
+        log.info("[SVC1-SUB1][/after] After LRA Called : " + lraId);
+        log.info("[SVC1-SUB1][/after] Final LRA Status : " + status);
         // Clean up of resources held by this LRA
 //        return ResponseEntity.ok().build();
     }

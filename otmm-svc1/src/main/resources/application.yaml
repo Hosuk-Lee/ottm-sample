@@ -9,8 +9,7 @@ spring.microtx.lra:
   participant-url: http://localhost:8082
   headers-propagation-prefix: { x-b3-, oracle-tmm-, authorization, refresh- }
 
-svc1.service.url: http://localhost:8082/agreement/api/new
-svc2.service.url: http://localhost:8083/account/api/new
+svc1-sbu1.service.url: http://localhost:9011/svc-1/api/new
 
 logging.level:
   com.kb: DEBUG

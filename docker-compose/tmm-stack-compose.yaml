@@ -51,4 +51,15 @@ services:
       ### MicroTx Springboot lib specific env
       SPRING_MICROTX_LRA_COORDINATOR_URL: "http://otmm-tcs:9000/api/v1/lra-coordinator"
       SPRING_MICROTX_LRA_PARTICIPANT_URL: "http://svc2:8083"
+  svc1-sub1:
+    image: "ottm-svc1-sub1:1.0"
+    ports:
+      - "9011:9011"
+    deploy:
+      replicas: 1
+    environment:
+      SERVICE_NAME: svc1-sub1
+      ### MicroTx Springboot lib specific env
+      SPRING_MICROTX_LRA_COORDINATOR_URL: "http://otmm-tcs:9000/api/v1/lra-coordinator"
+      SPRING_MICROTX_LRA_PARTICIPANT_URL: "http://svc1-sub1:9011"
 

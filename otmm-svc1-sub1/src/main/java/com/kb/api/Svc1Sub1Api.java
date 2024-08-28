@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestMapping("/svc-1/api")
 @Tag(name = "Svc1Sub1Api", description = "Service1 SubModule1 API")
 public interface Svc1Sub1Api {
 
@@ -40,6 +41,7 @@ public interface Svc1Sub1Api {
             produces = { "application/json" },
             consumes = { "application/json" }
     )
+//    @LRA(value = LRA.Type.REQUIRES_NEW, end = false)
     public ResponseEntity<?> accountNew(
         @RequestHeader(value = LRA_HTTP_CONTEXT_HEADER, required = false) String lraId,
         @RequestHeader(value = ORACLE_TMM_TX_TOKEN, required = false) String oracleTmmTxToken,
@@ -50,14 +52,17 @@ public interface Svc1Sub1Api {
             produces = { "application/json" },
             consumes = { "application/json" }
     )
+//    @Complete
     public ResponseEntity<?> completeWork(@RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId) ;
 
     @RequestMapping(value = "/compensate", method = RequestMethod.PUT)
+//    @Compensate
     public ResponseEntity<?> compensateWork(@RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId) ;
 
-    @RequestMapping(value = "/after", method = RequestMethod.PUT)
-    public ResponseEntity<?> after(@RequestHeader(LRA_HTTP_ENDED_CONTEXT_HEADER) String lraId,
-        @RequestBody String status);
+//    @RequestMapping(value = "/after", method = RequestMethod.PUT)
+//    @AfterLRA
+//    public ResponseEntity<?> after(@RequestHeader(LRA_HTTP_ENDED_CONTEXT_HEADER) String lraId,
+//        @RequestBody String status);
 
 //    @DeleteMapping(value = "/forget")
 //    public ResponseEntity<?> forget(@RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId,

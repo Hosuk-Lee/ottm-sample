@@ -15,6 +15,8 @@ import com.oracle.microtx.springboot.lra.annotation.Status;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +28,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/svc-1/api")
 public class Svc1Controller {
 
     private static final String ORACLE_TMM_TX_TOKEN = "Oracle-Tmm-Tx-Token";
+    private final Svc1Service svc1Service;
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @LRA(value = LRA.Type.MANDATORY, end = false)
     public ResponseEntity<?> accountNew(
-        @RequestParam(value = "account_name", required = false, defaultValue = "basic") String accountName,
+        @RequestBody Map body,
         @RequestHeader(LRA_HTTP_CONTEXT_HEADER) String lraId,
         @RequestHeader(value = ORACLE_TMM_TX_TOKEN, required = false) String oracleTmmTxToken) {
         log.info("[SVC-1]lraId {} / oracleTmmTxToken {}", lraId, oracleTmmTxToken);
+        svc1Service.callSvc1Sub1(body);
         return ResponseEntity.ok().header("SAMPLE", "SAMPLE")
             .body(new HashMap<>().put("key1", "value1"));
     }

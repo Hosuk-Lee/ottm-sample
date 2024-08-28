@@ -1,4 +1,4 @@
-server.port: 9011
+server.port: 19011
 
 spring.application.name: ottm-svc1-sub1
 spring.output.ansi.enabled: always

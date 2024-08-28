@@ -12,6 +12,7 @@ import com.oracle.microtx.springboot.lra.annotation.LRA;
 import com.oracle.microtx.springboot.lra.annotation.Leave;
 import com.oracle.microtx.springboot.lra.annotation.ParticipantStatus;
 import com.oracle.microtx.springboot.lra.annotation.Status;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
@@ -30,16 +31,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/svc-1/api")
 public class Svc1Sub1Controller implements Svc1Sub1Api {
 
     private final Svc1Sub1ApiProvider provider;
 
-    @LRA(value = LRA.Type.REQUIRES_NEW, end = false)
+    @LRA(value = LRA.Type.MANDATORY, end = false)
     public ResponseEntity<?> accountNew(
             String lraId, String oracleTmmTxToken, Map body)
     {
-        log.info("[SVC-1]lraId {} / oracleTmmTxToken {}", lraId, oracleTmmTxToken);
+        log.info("[SVC-1][SUB-1]lraId {} / oracleTmmTxToken {}", lraId, oracleTmmTxToken);
         provider.accountNew("",oracleTmmTxToken,body);
         return ResponseEntity.ok().header("SAMPLE", "SAMPLE")
             .body(new HashMap<>().put("key1", "value1"));
@@ -47,7 +47,7 @@ public class Svc1Sub1Controller implements Svc1Sub1Api {
 
     @Complete
     public ResponseEntity<?> completeWork(String lraId) {
-        log.info("[SVC-1][/complete] complete() called for LRA : " + lraId);
+        log.info("[SVC-1][SUB-1][/complete] complete() called for LRA : " + lraId);
         // Business logic to complete the work related to this LRA
         String id = new String(
             Base64.getEncoder().encode(lraId.getBytes(StandardCharsets.UTF_8)));
@@ -61,7 +61,7 @@ public class Svc1Sub1Controller implements Svc1Sub1Api {
     @Compensate
     public ResponseEntity<?> compensateWork(
             String lraId) {
-        log.info("[SVC-1][/compensate] compensate() called for LRA : " + lraId);
+        log.info("[SVC-1][SUB-1][/compensate] compensate() called for LRA : " + lraId);
         // Business logic to compensate the work related to this LRA
         String bookingId = new String(
             Base64.getEncoder().encode(lraId.getBytes(StandardCharsets.UTF_8)));
@@ -72,10 +72,11 @@ public class Svc1Sub1Controller implements Svc1Sub1Api {
         return ResponseEntity.ok(ParticipantStatus.FailedToCompensate.name());
     }
 
+    @AfterLRA
     public ResponseEntity<?> after(
-            String lraId, String status) {
-        log.info("[SVC-1][/after] After LRA Called : " + lraId);
-        log.info("[SVC-1][/after] Final LRA Status : " + status);
+            URI lraId, String status) {
+        log.info("[SVC-1][SUB-1][/after] After LRA Called : " + lraId);
+        log.info("[SVC-1][SUB-1][/after] Final LRA Status : " + status);
         // Clean up of resources held by this LRA
         return ResponseEntity.ok().build();
     }
